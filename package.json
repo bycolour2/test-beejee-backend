@@ -9,7 +9,7 @@
     "dev": "tsx watch --env-file=.env src/index.ts",
     "build": "tsc",
     "lint": "eslint --fix src",
-    "deploy": "pnpm i && pnpm build && pnpm db:push && db:seed",
+    "build:render": "pnpm i && pnpm build && pnpm db:push && db:seed",
     "db:studio": "pnpm drizzle-kit studio",
     "db:generate": "pnpm drizzle-kit generate",
     "db:push": "pnpm drizzle-kit push",
