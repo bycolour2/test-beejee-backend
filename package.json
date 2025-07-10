@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dist/index.js",
     "dev": "tsx watch --env-file=.env src/index.ts",
-    "build": "tsc",
+    "build": "tsc && tsc-alias",
     "lint": "eslint --fix src",
     "build:render": "pnpm i && pnpm build && pnpm db:push && pnpm db:seed",
     "db:studio": "pnpm drizzle-kit studio",
@@ -42,6 +42,7 @@
     "eslint-plugin-unused-imports": "^4.1.4",
     "prettier": "^3.6.2",
     "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.16",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   }
