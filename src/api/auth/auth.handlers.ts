@@ -15,14 +15,14 @@ export const login: RequestHandler = async (req, res) => {
     const user = await db.select().from(users).where(eq(users.username, username));
 
     if (user.length === 0) {
-      res.status(404).json({ message: "User not found" } as ErrorResponse);
+      res.status(401).json({ message: "Unauthorized" } as ErrorResponse);
       return;
     }
 
     const isPasswordValid = hashText(password) === user[0].password;
 
     if (!isPasswordValid) {
-      res.status(401).json({ message: "Invalid password" } as ErrorResponse);
+      res.status(401).json({ message: "Unauthorized" } as ErrorResponse);
       return;
     }
 
@@ -43,6 +43,21 @@ export const login: RequestHandler = async (req, res) => {
   }
 };
 
+export const me: RequestHandler = async (req, res) => {
+  try {
+    const userId = req.user!.id;
+
+    const [user] = await db.select().from(users).where(eq(users.id, userId));
+
+    res.json({
+      id: user.id,
+      username: user.username,
+    });
+  } catch (error) {
+    console.error("Error getting me:", error);
+  }
+};
+
 export const logout: RequestHandler = async (req, res) => {
   try {
     const userId = req.user!.id;
@@ -50,7 +65,7 @@ export const logout: RequestHandler = async (req, res) => {
     const user = await db.select().from(users).where(eq(users.id, userId));
 
     if (user.length === 0 || user[0].accessToken === null) {
-      res.status(404).json({ message: "Unauthorized" } as ErrorResponse);
+      res.status(401).json({ message: "Unauthorized" } as ErrorResponse);
       return;
     }
 
